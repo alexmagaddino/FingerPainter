@@ -1,8 +1,7 @@
-package nl.picnic.fingerpaintingview
+package com.alexm.fingerprinter
 
-import org.junit.Test
+import android.test.MoreAsserts.assertEquals
 
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

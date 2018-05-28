@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.MotionEvent
-import nl.picnic.fingerpaintview.R
 
 class FingerPaintImageView @JvmOverloads constructor(context: Context,
                                                      attrs: AttributeSet? = null,

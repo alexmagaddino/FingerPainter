@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "nl.picnic.fingerpaintingview"
+        applicationId "tech.picnic.fingerpaintingview"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1

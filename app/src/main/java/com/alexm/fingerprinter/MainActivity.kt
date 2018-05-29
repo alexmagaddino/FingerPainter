@@ -19,13 +19,13 @@ import java.util.jar.Manifest
 import android.R.attr.bitmap
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import com.alexm.fingerprinter.Interfaces.Contract
 
 
-
-
-class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, View.OnClickListener, Contract.IView {
 
     private val PERMISSION_REQUEST_CODE:Int = 1000
+    private val presenter = Presenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,20 +51,10 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, View.
         }
     }
 
-    private fun saveBitmap() {
-        val storage = Storage(applicationContext)
-        val path = storage.externalStorageDirectory
-        storage.createDirectory("$path${File.separator}MyFolder", true)
-
-        val bitmap:Bitmap
-        if(finger.drawable is BitmapDrawable) {
-            bitmap = (finger.drawable as BitmapDrawable).bitmap
-            storage.createFile("$path${File.separator}MyFolder${File.separator}FingerDraw.bmp", bitmap)
-            Toast.makeText(this, "Salvato", Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this, "L'immagine è vuota", Toast.LENGTH_SHORT).show()
-        }
+    override fun saveMessage(output:String) {
+        Toast.makeText(this, output, Toast.LENGTH_SHORT).show()
     }
+
 
     private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager
@@ -73,7 +63,7 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, View.
                     arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     PERMISSION_REQUEST_CODE)
         }else{
-            saveBitmap()
+            presenter.saveData(applicationContext, finger.drawable)
         }
     }
 
@@ -82,12 +72,21 @@ class MainActivity : AppCompatActivity(), SeekBar.OnSeekBarChangeListener, View.
         when(requestCode){
             PERMISSION_REQUEST_CODE ->
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    saveBitmap()
+                    presenter.saveData(applicationContext, finger.drawable)
                 else
                     Toast.makeText(this, "Se non mi dai i permessi non posso scrivere, cornuto", Toast.LENGTH_SHORT).show()
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        presenter.subscribe(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.unsubscribe()
+    }
 
     override fun onProgressChanged(seekBar: SeekBar?, value: Int, p2: Boolean) {
         if(seekBar?.id == alpha.id||seekBar?.id == red.id||seekBar?.id == green.id||seekBar?.id == blue.id){

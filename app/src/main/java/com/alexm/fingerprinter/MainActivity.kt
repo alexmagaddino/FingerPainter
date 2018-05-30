@@ -7,18 +7,11 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import tech.picnic.fingerpaintview.R
-import com.snatik.storage.Storage
-import java.io.File
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
-import android.graphics.drawable.BitmapDrawable
 import android.support.v4.content.ContextCompat
-import java.util.jar.Manifest
-import android.R.attr.bitmap
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.content.Context
 import com.alexm.fingerprinter.Interfaces.Contract
 
 
